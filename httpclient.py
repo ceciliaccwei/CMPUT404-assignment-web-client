@@ -82,24 +82,17 @@ class HTTPClient(object):
         print(body)
         return HTTPResponse(code, body)
 
-
     # https://docs.python.org/3/library/urllib.parse.html
     def parseURL(self, url):
         result = urlparse(url)
         host = result.hostname
         port = result.port
         path = result.path
-       
-
         if port == None:
             port = 80
         if path == "":
             path = "/"
-        
-
         return host,port,path
-        
-
 
     def POST(self, url, args=None):
         host,port,path = self.parseURL(url)
@@ -111,14 +104,11 @@ class HTTPClient(object):
         payload = "POST {} HTTP/1.1\r\nHost: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept: */*\r\nContent-Length: {}\r\nConnection: close\r\n\r\n".format(path,host,len(args))
         payload = payload + args
         self.sendall(payload)
-        
         data = self.recvall(self.socket)
         self.close()
-
         code = self.get_code(data)
         body = self.get_body(data)
         print(body)
-        
         return HTTPResponse(code, body)
 
     def command(self, url, command="GET", args=None):
