@@ -24,6 +24,14 @@ import re
 # you may use urllib to encode data appropriately
 from urllib.parse import urlparse, urlencode
 
+# references
+
+# HTML post header example
+# https: // developer.mozilla.org/en-US/docs/Web/HTTP/Methods/POST
+
+# urllib reference
+# https://docs.python.org/3/library/urllib.parse.html
+
 def help():
     print("httpclient.py [GET/POST] [URL]\n")
 
@@ -82,7 +90,6 @@ class HTTPClient(object):
         print(body)
         return HTTPResponse(code, body)
 
-    # https://docs.python.org/3/library/urllib.parse.html
     def parseURL(self, url):
         result = urlparse(url)
         host = result.hostname
@@ -101,7 +108,8 @@ class HTTPClient(object):
             args = ""
         else:
             args = urlencode(args)
-        payload = "POST {} HTTP/1.1\r\nHost: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept: */*\r\nContent-Length: {}\r\nConnection: close\r\n\r\n".format(path,host,len(args))
+        payload = "POST {} HTTP/1.1\r\nHost: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept: */*\r\nContent-Length: {}\r\nConnection: close\r\n\r\n".format(
+            path, host, len(args))
         payload = payload + args
         self.sendall(payload)
         data = self.recvall(self.socket)
